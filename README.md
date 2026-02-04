@@ -13,24 +13,17 @@ HAR (HTTP Archive) 파일을 JMeter JMX 테스트 플랜으로 변환하는 도�
 - ✅ POST 데이터 및 쿼리 파라미터 지원
 - ✅ 단일 실행 파일 (의존성 없음)
 
-## 설치
+## 다운로드
 
-### 사전 빌드된 바이너리
+`dist/` 디렉토리에서 OS에 맞는 바이너리를 다운로드하세요.
 
-[Releases](releases) 페이지에서 다운로드
-
-### 소스에서 빌드
-
-```bash
-# Windows 64비트
-GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o activo-forge.exe
-
-# macOS
-go build -o activo-forge
-
-# Linux
-GOOS=linux GOARCH=amd64 go build -o activo-forge
-```
+| 파일 | OS | 아키텍처 |
+|------|-----|---------|
+| `activo-forge-windows-amd64.exe` | Windows | 64비트 |
+| `activo-forge-windows-386.exe` | Windows | 32비트 |
+| `activo-forge-linux-amd64` | Linux | 64비트 |
+| `activo-forge-darwin-amd64` | macOS | Intel |
+| `activo-forge-darwin-arm64` | macOS | Apple Silicon |
 
 ## 사용법
 
@@ -72,6 +65,17 @@ activo-forge -i recording.har -domain api.example.com
 activo-forge -i recording.har -exclude-static=false
 ```
 
+## 샘플 파일
+
+`samples/` 디렉토리에 예제 파일이 있습니다.
+
+| 파일 | 설명 |
+|------|------|
+| `sample-api.har` | REST API 호출 예제 |
+| `sample-api.jmx` | 변환 결과 |
+| `sample-web.har` | 웹 페이지 탐색 예제 |
+| `sample-web.jmx` | 변환 결과 |
+
 ## HAR 파일 생성 방법
 
 ### Chrome DevTools
@@ -88,24 +92,50 @@ activo-forge -i recording.har -exclude-static=false
 2. Network 탭 선택
 3. 톱니바퀴 → "Save All As HAR"
 
-## 출력 예시
+## 소스에서 빌드
+
+```bash
+# 현재 OS
+make build
+
+# 모든 플랫폼
+make build-all
+
+# 샘플 JMX 생성
+make samples
+```
+
+### 개별 플랫폼 빌드
+
+```bash
+make build-windows-amd64   # Windows 64비트
+make build-windows-386     # Windows 32비트
+make build-linux-amd64     # Linux 64비트
+make build-darwin-amd64    # macOS Intel
+make build-darwin-arm64    # macOS Apple Silicon
+```
+
+## 프로젝트 구조
 
 ```
-Activo-Forge v1.0.0
-입력: recording.har
-출력: testplan.jmx
----
-총 150개 요청 발견
-변환된 요청: 45개
-제외된 요청: 105개 (정적 리소스/필터)
----
-완료: testplan.jmx
+activo-forge/
+├── main.go              # CLI 진입점
+├── har/
+│   └── parser.go        # HAR 파싱
+├── jmeter/
+│   ├── generator.go     # JMX 생성
+│   └── types.go         # XML 구조체
+├── dist/                # OS별 빌드 결과물
+├── samples/             # 샘플 HAR/JMX 파일
+├── go.mod
+├── Makefile
+└── README.md
 ```
 
 ## 지원 환경
 
 - Windows 10/11, Windows Server 2016+
-- macOS 10.15+
+- macOS 10.15+ (Intel, Apple Silicon)
 - Linux (glibc 2.17+)
 
 ## 라이선스
