@@ -1,0 +1,24 @@
+# 바이너리
+activo-forge
+activo-forge.exe
+activo-forge-linux
+activo-forge-x86.exe
+*.exe
+*.out
+
+# 테스트 파일
+*.har
+*.jmx
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Go
+go.sum
